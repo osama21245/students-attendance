@@ -26,6 +26,7 @@ android {
     namespace "com.example.university_attendance"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+    
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -49,6 +50,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -65,8 +67,8 @@ flutter {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy:3.0.13'
-    implementation 'org.codehaus.groovy:groovy-ant:3.0.13'
-    implementation 'org.codehaus.groovy:groovy-astbuilder:3.0.13'
+    // implementation 'org.codehaus.groovy:groovy:3.0.13'
+    // implementation 'org.codehaus.groovy:groovy-ant:3.0.13'
+    // implementation 'org.codehaus.groovy:groovy-astbuilder:3.0.13'
 }
 
