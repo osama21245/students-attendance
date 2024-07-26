@@ -10,7 +10,19 @@ class AppTheme {
         contentPadding: const EdgeInsets.all(27),
         border: _border(),
         enabledBorder: _border(),
-        focusedBorder: _border(AppPallete.gradient2),
+        focusedBorder: _border(AppPallete.primaryColor),
+        errorBorder: _border(AppPallete.errorColor),
+      ),
+      appBarTheme:
+          const AppBarTheme(backgroundColor: AppPallete.backgroundColor));
+
+  static final appNadaTheme = ThemeData.dark().copyWith(
+      scaffoldBackgroundColor: AppPallete.secondaryColor,
+      inputDecorationTheme: InputDecorationTheme(
+        contentPadding: const EdgeInsets.all(27),
+        border: _border(),
+        enabledBorder: _border(),
+        focusedBorder: _border(AppPallete.primaryColor),
         errorBorder: _border(AppPallete.errorColor),
       ),
       appBarTheme:

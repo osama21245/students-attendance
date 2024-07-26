@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "263362389093",
+    "project_id": "lock-bd2ac",
+    "storage_bucket": "lock-bd2ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263362389093:android:cc7c2591b3152347f6128c",
+        "android_client_info": {
+          "package_name": "com.example.university_attendance"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ3nmO5qH4L1iCItUFGwpHRCv5oQIOAjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

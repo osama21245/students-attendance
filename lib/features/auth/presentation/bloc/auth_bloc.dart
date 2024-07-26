@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:university_attendance/features/auth/domain/usecases/current_user.dart';
 import 'package:university_attendance/features/auth/domain/usecases/user_sign_in.dart';
@@ -5,8 +7,9 @@ import 'package:university_attendance/features/auth/domain/usecases/user_sign_up
 import 'package:flutter/material.dart';
 
 import '../../../../core/common/cubit/app_user/app_user_cubit.dart';
-import '../../../../core/usecase/usecase.dart';
 import '../../../../core/common/entities/user.dart';
+import '../../data/model/user_model.dart';
+import '../../domain/usecases/set_stud_face_model.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -16,31 +19,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserSignIn _userSignIn;
   final GetCurrentUser _getCurrentUser;
   final AppUserCubit _appUserCubit;
+  final SetStudFaceModel _setStudFaceModel;
   AuthBloc(
       {required UserSignUp userSignUp,
+      required SetStudFaceModel setStudFaceModel,
       required UserSignIn userSignIn,
       required GetCurrentUser getCurrentUser,
       required AppUserCubit appUserCubit})
       : _userSignUp = userSignUp,
+        _setStudFaceModel = setStudFaceModel,
         _userSignIn = userSignIn,
         _getCurrentUser = getCurrentUser,
         _appUserCubit = appUserCubit,
         super(AuthInitial()) {
     on<AuthSignUp>(_authSignUp);
     on<AuthSignIn>(_authSignIn);
-    on<AuthIsUserLoggedIn>(_isUserLoggedIn);
-  }
-
-  void _isUserLoggedIn(
-    AuthIsUserLoggedIn event,
-    Emitter<AuthState> emit,
-  ) async {
-    final res = await _getCurrentUser(NoParams());
-
-    res.fold(
-      (l) => emit(AuthFail(l.toString())),
-      (r) => _emitAuthSuccess(r!, emit),
-    );
+    on<AuthSetStudFaceModel>(_setStudFaceModelFun);
   }
 
   void _authSignUp(AuthSignUp event, Emitter<AuthState> emit) async {
@@ -52,7 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthFail(l.erorr));
       print(l.erorr);
     }, (r) {
-      emit(AuthSuccess(r));
+      emit(AuthSuccess(r.response));
     });
   }
 
@@ -66,11 +60,34 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     res.fold((l) {
       emit(AuthFail(l.erorr));
       print(l.erorr);
-    }, (r) => _emitAuthSuccess(r, emit));
+    }, (r) {
+      _appUserCubit.updateUser(UserModel(
+          id: "",
+          name: event.email,
+          email: event.password,
+          level: "",
+          universityId: "",
+          banDate: ""));
+      emit(AuthSuccess(r.response));
+    });
   }
 
-  void _emitAuthSuccess(User user, Emitter<AuthState> emit) {
-    emit(AuthSuccess(user));
-    _appUserCubit.updateUser(user);
+  void _setStudFaceModelFun(
+      AuthSetStudFaceModel event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    final res = await _setStudFaceModel(
+        SetStudFaceModelParams(file: event.image, stdId: event.studId));
+
+    res.fold((l) {
+      print(l.erorr);
+      emit(AuthFail(l.erorr));
+    }, (r) {
+      if (r.response == "success") {
+        emit(AuthSetModelSuccess());
+        print(r.response);
+      } else {
+        emit(AuthFail(r.response.toString()));
+      }
+    });
   }
 }

@@ -3,16 +3,17 @@ import 'package:university_attendance/core/usecase/usecase.dart';
 import 'package:university_attendance/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/src/either.dart';
 
-import '../../../../core/common/entities/user.dart';
+import '../../../../core/common/entities/response.dart';
 
-class UserSignUp implements UseCase<User, UserSignUpParams> {
+class UserSignUp implements UseCase<HostResponse, UserSignUpParams> {
   final AuthRepository authRepository;
 
   UserSignUp(this.authRepository);
 
   @override
-  Future<Either<Faliure, User>> call(UserSignUpParams userSignUpParams) async {
-    return await authRepository.signInWithEmailAndPassword(
+  Future<Either<Faliure, HostResponse>> call(
+      UserSignUpParams userSignUpParams) async {
+    return await authRepository.signupWithEmailAndPassword(
         email: userSignUpParams.email,
         password: userSignUpParams.password,
         name: userSignUpParams.name);
