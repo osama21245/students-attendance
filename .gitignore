@@ -31,7 +31,6 @@ migrate_working_dir/
 .pub/
 /build/
 /lib/core/secrets
-
 # Symbolication related
 app.*.symbols
 
