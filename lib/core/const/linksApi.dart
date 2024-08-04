@@ -105,6 +105,11 @@ class Apilinks {
   //set faceId model
   static const String linkSetFaceIdModel =
       'https://cac9-156-217-169-34.ngrok-free.app/submit';
+
+  //attendance
+
+  static const String linkGetUserAttendance =
+      "https://lockapp.site/main_app/attendance/get_user_attendance.php";
 }
 
 // http://osamagamil.rf.gd/ecommerce2/item/

@@ -67,13 +67,11 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
     switch (state) {
       case AppLifecycleState.resumed:
         _banUser(withNav: false, removeBan: true);
-        _changeStatusBarColor(isReset: true);
         print("resume");
         break;
 
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
-        _changeStatusBarColor(isReset: false);
         _banUser(withNav: false, removeBan: false);
         print("pause");
       case AppLifecycleState.detached:
@@ -111,6 +109,7 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
     //     LocalNotification.streamController.stream.listen((val) {
     //   print(val.id);
     // });
+    _changeStatusBarColor(isReset: false);
     _startCheckingConnection();
     checkPermissions();
     _startAttendTimer();
@@ -124,6 +123,7 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
     _badStateTimer.dispose(); // Need to call dispose function
     FlutterBackground.disableBackgroundExecution();
     WidgetsBinding.instance.removeObserver(this);
+    _changeStatusBarColor(isReset: true);
     // _notificationSubscription!.cancel();
     super.dispose();
   }
