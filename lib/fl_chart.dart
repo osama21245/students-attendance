@@ -404,6 +404,8 @@ class _LineChartState extends State<_LineChart> {
           FlSpot(13, 4.5),
         ],
       );
+
+  //
 }
 
 class LineChartSample1 extends StatefulWidget {
