@@ -74,6 +74,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   screen_recorder: ^0.2.0
   timeline_tile: ^2.0.0
+  timeago: ^3.7.0
 
 
 dev_dependencies:

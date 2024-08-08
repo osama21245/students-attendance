@@ -20,17 +20,18 @@ class FaceCaptureScreen extends StatefulWidget {
   _FaceCaptureScreenState createState() => _FaceCaptureScreenState();
 }
 
-class _FaceCaptureScreenState extends State<FaceCaptureScreen> {
+class _FaceCaptureScreenState extends State<FaceCaptureScreen>
+    with SingleTickerProviderStateMixin {
   CameraController? _controller;
-  List<File> _images = [];
-  List<File> _acceptedImages = [];
-  bool faceInBox = false;
+  final List<File> _images = [];
+  final List<File> _acceptedImages = [];
+  bool _faceInBox = false;
   File? captureImage;
   File? checkFaceInBoxImage;
-  Uuid uuid = Uuid();
-
+  Uuid uuid = const Uuid();
+  double _progress = 0.0;
   late Timer _timer;
-  int _photoCount = 0;
+  final int _photoCount = 0;
   final int _maxPhotos = 10; // يمكن تعديل العدد المناسب
   bool _isTakingPhotos = false;
 
@@ -60,9 +61,9 @@ class _FaceCaptureScreenState extends State<FaceCaptureScreen> {
       final imageFile = File(imagePath);
       checkFaceInBoxImage = imageFile;
       if (await checkFaceInPhotoToUser(checkFaceInBoxImage!, context)) {
-        faceInBox = true;
+        _faceInBox = true;
       } else {
-        faceInBox = false;
+        _faceInBox = false;
       }
       setState(() {});
     });
@@ -78,6 +79,7 @@ class _FaceCaptureScreenState extends State<FaceCaptureScreen> {
         _controller!.value.isInitialized &&
         _photoCount < _maxPhotos) {
       _takePicture();
+      _progress += 10;
     }
   }
 
@@ -106,9 +108,10 @@ class _FaceCaptureScreenState extends State<FaceCaptureScreen> {
         _startTakingPhotos();
       }
     } else {
-      faceInBox = false;
+      _faceInBox = false;
       _isTakingPhotos = false;
       _images.clear();
+      _progress = 0;
       _checkFaceInCircle();
       showSnackBar(context, "Please set your head in the frame");
       setState(() {});
@@ -126,21 +129,6 @@ class _FaceCaptureScreenState extends State<FaceCaptureScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          GestureDetector(
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => FaceDetect())),
-            child: Text(
-              _images.length.toString(),
-            ),
-          ),
-          SizedBox(
-            width: 60,
-          )
-        ],
-        title: Text('Face Capture'),
-      ),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSetModelSuccess) {
@@ -152,53 +140,110 @@ class _FaceCaptureScreenState extends State<FaceCaptureScreen> {
         },
         builder: (context, state) {
           return SingleChildScrollView(
-            child: Column(
-              children: [
-                _controller != null && _controller!.value.isInitialized
-                    ? Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: faceInBox
-                                ? AppPallete.primaryColor
-                                : Color.fromARGB(95, 246, 129, 120)),
-                        width: size.height / 3, // Adjust the width as needed
-                        height: size.height / 3, // Adjust the height as needed
-                        child: Padding(
-                          padding: EdgeInsets.all(size.width * 0.013),
-                          child: ClipOval(
-                            child: AspectRatio(
-                              aspectRatio: 1 / 1,
-                              child: CameraPreview(_controller!),
+            child: SizedBox(
+              height: size.height,
+              width: size.width,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: size.height * 0.05,
+                  ),
+                  _controller != null && _controller!.value.isInitialized
+                      ? Container(
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: _isTakingPhotos
+                                  ? AppPallete.transparentPerbel
+                                  : _faceInBox
+                                      ? AppPallete.primaryColor
+                                      : AppPallete.transparentRed),
+                          width: size.height / 3, // Adjust the width as needed
+                          height:
+                              size.height / 3, // Adjust the height as needed
+                          child: Padding(
+                            padding: EdgeInsets.all(size.width * 0.013),
+                            child: ClipOval(
+                              child: AspectRatio(
+                                aspectRatio: 1 / 1,
+                                child: CameraPreview(_controller!),
+                              ),
                             ),
                           ),
+                        )
+                      : const CircularProgressIndicator(),
+                  SizedBox(height: size.height * 0.05),
+                  _faceInBox
+                      ? _isTakingPhotos
+                          ? Column(
+                              children: [
+                                SizedBox(
+                                  width: 200,
+                                  child: LinearProgressIndicator(
+                                    borderRadius: BorderRadius.circular(30),
+                                    value: _progress / 100,
+                                    minHeight: 20,
+                                  ),
+                                ),
+                                Text(
+                                  '${_progress.toInt()}%',
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      color: AppPallete.whiteColor),
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.013,
+                                ),
+                                Text(
+                                  textAlign: TextAlign.center,
+                                  "Please set your head in the frame\n and move your face slowly to\n get the best performance",
+                                  style: TextStyle(
+                                      color: AppPallete.whiteColor,
+                                      fontSize: 11,
+                                      height: size.height * 0.002),
+                                ),
+                              ],
+                            )
+                          : AnimatedOpacity(
+                              opacity: _faceInBox ? 1 : 0,
+                              duration: const Duration(seconds: 1),
+                              child: ElevatedButton(
+                                onPressed:
+                                    _faceInBox ? _startTakingPhotos : () {},
+                                child: const Text('Start Taking Photos'),
+                              ))
+                      : SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: size.height * 0.15,
+                                ),
+                                child: const Text(
+                                  "Note: if you want to get the best result \nplease follow the instructions \n \n    1-please set your head in the frame \n    2-move your face slowly \n    3-Keep your hand steady and do not make any \n    sudden movements when taking pictures\n    so as not to spoil their quality.",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    height: 1.4,
+                                    color: AppPallete.whiteColor,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      )
-                    : const CircularProgressIndicator(),
-                const SizedBox(height: 10),
-                _isTakingPhotos
-                    ? Column(
-                        children: [
-                          Container(height: size.height * 0.4, child: Loader()),
-                          Text("Please don't move your face"),
-                        ],
-                      )
-                    : AnimatedOpacity(
-                        opacity: faceInBox ? 1 : 0,
-                        duration: Duration(seconds: 1),
-                        child: ElevatedButton(
-                          onPressed: faceInBox ? _startTakingPhotos : () {},
-                          child: const Text('Start Taking Photos'),
-                        )),
 
-                // Expanded(
-                //   child: ListView.builder(
-                //     itemCount: _acceptedImages.length,
-                //     itemBuilder: (context, index) {
-                //       return Image.file(_acceptedImages[index]);
-                //     },
-                //   ),
-                // ),
-              ],
+                  // Expanded(
+                  //   child: ListView.builder(
+                  //     itemCount: _acceptedImages.length,
+                  //     itemBuilder: (context, index) {
+                  //       return Image.file(_acceptedImages[index]);
+                  //     },
+                  //   ),
+                  // ),
+                ],
+              ),
             ),
           );
         },

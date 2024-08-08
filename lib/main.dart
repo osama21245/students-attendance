@@ -1,5 +1,7 @@
 import 'package:university_attendance/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:university_attendance/core/routing/app_router.dart';
 import 'package:university_attendance/core/theme/theme_data.dart';
+import 'package:university_attendance/features/attendance/presentation/pages/home_screen.dart';
 import 'package:university_attendance/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:university_attendance/features/auth/presentation/pages/login_page.dart';
 import 'package:university_attendance/fl_chart.dart';
@@ -11,6 +13,7 @@ import 'package:university_attendance/user_time_line.dart';
 import 'core/common/entities/user.dart';
 import 'core/utils/get_user_data.dart';
 import 'features/attendance/presentation/bloc/attendance_bloc.dart';
+import 'features/auth/presentation/pages/take_photos_screen.dart';
 import 'test_screen_record.dart';
 
 void main() async {
@@ -23,12 +26,15 @@ void main() async {
       BlocProvider(create: (_) => serviceLocator<AttendanceBloc>()),
       BlocProvider(create: (_) => serviceLocator<AppUserCubit>()),
     ],
-    child: const MyApp(),
+    child: MyApp(
+      appRouter: AppRouter(),
+    ),
   ));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final AppRouter appRouter;
+  const MyApp({super.key, required this.appRouter});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -58,24 +64,12 @@ class _MyAppState extends State<MyApp> {
       home: BlocBuilder<AppUserCubit, AppUserState>(
         builder: (context, state) {
           if (state is AppUserIsLogIn) {
-            return UserTimeLine();
+            return HomeMain();
           } else {
-            return UserTimeLine();
+            return LoginPage();
           }
         },
       ),
-      // BlocSelector<AppUserCubit, AppUserState, bool>(
-      //   selector: (state) {
-      //     return state is AppUserIsLogIn;
-      //   },
-      //   builder: (context, isLogIn) {
-      //     // if (isLogIn) {
-      //     return const HomeScreen();
-      //     //  } else {
-      //     return const HomeScreen();
-      //     //  }
-      //   },
-      // ),
     );
   }
 }

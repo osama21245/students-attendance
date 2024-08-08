@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:university_attendance/core/common/widget/loader.dart';
 import 'package:university_attendance/core/theme/app_pallete.dart';
 import 'package:university_attendance/core/utils/show_snack_bar.dart';
@@ -52,6 +53,7 @@ class _ConfirmAttendanceScreenState extends State<ConfirmAttendanceScreen> {
                           bandDate: DateTime.now().toString(),
                           color: AppPallete.gradient1,
                           size: size,
+                          sessionId: state.attendance[index].attendance_session,
                         )));
           } else {
             return const SizedBox();

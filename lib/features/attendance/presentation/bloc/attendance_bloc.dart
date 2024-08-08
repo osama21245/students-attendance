@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:university_attendance/core/usecase/usecase.dart';
+import 'package:university_attendance/features/attendance/domin/entities/session.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/check_stud_face_model.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/confirm_attendance.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/get_local_attendance.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/get_local_photos.dart';
+import 'package:university_attendance/features/attendance/domin/usecases/sessions/get_sessions.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/set_local_photos.dart';
 import '../../domin/entities/attendance.dart';
 import '../../domin/usecases/confirm_qualifications.dart';
@@ -17,6 +19,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
   final ConfirmAttendance _confirmAttendance;
   final ConfirmQualifications _confirmQualifications;
   final CheckStudFace _checkStudFace;
+  final GetSessions _getSessions;
   final GetLocalPhotos _getLocalPhotos;
   final SetLocalPhotos _setLocalPhotos;
   final GetLocalAttendance _getLocalAttendance;
@@ -25,6 +28,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     required ConfirmQualifications confirmQualifications,
     required ConfirmAttendance confirmAttendance,
     required CheckStudFace checkStudFace,
+    required GetSessions getSessions,
     required GetLocalPhotos getLocalPhotos,
     required SetLocalPhotos setLocalPhotos,
     required GetLocalAttendance getLocalAttendance,
@@ -32,6 +36,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
   })  : _confirmAttendance = confirmAttendance,
         _confirmQualifications = confirmQualifications,
         _checkStudFace = checkStudFace,
+        _getSessions = getSessions,
         _getLocalPhotos = getLocalPhotos,
         _setLocalPhotos = setLocalPhotos,
         _getLocalAttendance = getLocalAttendance,
@@ -40,6 +45,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     on<AttendanceConfirmAttendance>(_confirmAttendancefun);
     on<AttendanceConfirmQualifications>(_confirmAttendanceQualifications);
     on<AttendanceCheckStudFace>(_checkStudFaceFun);
+    on<AttendanceGetSessions>(_getSessionsFun);
     on<AttendanceGetLocalAttendance>(_getLocalAttendanceFun);
     on<AttendanceSetLocalAttendance>(_setLocalAttendanceFun);
     on<AttendanceGetLocalPhotos>(_getLocalPhotosFun);
@@ -54,7 +60,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
   ) async {
     emit(AttendanceLoading());
     final res = await _confirmAttendance(ConfirmAttendanceParams(
-        bssid: event.bssid, id: event.id, stdId: event.stdid));
+        sessionId: event.sessionId, userId: event.userId));
 
     res.fold(
       (l) => emit(AttendanceFail(l.toString())),
@@ -109,39 +115,45 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     });
   }
 
+  //sessions
+
+  _getSessionsFun(
+      AttendanceGetSessions event, Emitter<AttendanceState> emit) async {
+    emit(AttendanceLoading());
+    final res =
+        await _getSessions(GetSessionsParams(collageId: event.collageId));
+    res.fold((l) => emit(AttendanceFail(l.toString())),
+        (r) => emit(AttendanceGetSessionsSuccess(sessions: r)));
+  }
+
   // local database
 
   void _getLocalAttendanceFun(
       AttendanceGetLocalAttendance event, Emitter<AttendanceState> emit) async {
     final res = await _getLocalAttendance(NoParams());
-    res.fold((l) => AttendanceFail(l.toString()),
+    res.fold((l) => emit(AttendanceFail(l.toString())),
         (r) => emit(AttendanceGetLocalAttendanceSuccess(attendance: r)));
   }
 
   void _setLocalAttendanceFun(
       AttendanceSetLocalAttendance event, Emitter<AttendanceState> emit) async {
     final res = await _setLocalAttendance(SetLocalAttendanceParams(
-        bssid: event.bssid,
-        id: event.id,
-        stdId: event.stdId,
-        date: event.date,
-        status: event.status,
-        time: event.time));
-    res.fold((l) => AttendanceFail(l.toString()),
+        sessionId: event.sessionId, userId: event.userId));
+    res.fold((l) => emit(AttendanceFail(l.toString())),
         (r) => emit(AttendanceSetLocalAttendanceSuccess()));
   }
 
   void _getLocalPhotosFun(
       AttendanceGetLocalPhotos event, Emitter<AttendanceState> emit) async {
     final res = await _getLocalPhotos(NoParams());
-    res.fold((l) => AttendanceFail(l.toString()),
+    res.fold((l) => emit(AttendanceFail(l.toString())),
         (r) => emit(AttendanceGetLocalPhotosSuccess(file: r)));
   }
 
   void _setLocalPhotosFun(
       AttendanceSetLocalPhotos event, Emitter<AttendanceState> emit) async {
     final res = await _setLocalPhotos(SetLocalPhotosParams(file: event.file));
-    res.fold((l) => AttendanceFail(l.toString()),
+    res.fold((l) => emit(AttendanceFail(l.toString())),
         (r) => emit(AttendanceSetLocalPhotosSuccess()));
   }
 

@@ -1,48 +1,3 @@
-// import 'package:network_info_plus/network_info_plus.dart';
-// import '../../../../core/erorr/exception.dart';
-
-// abstract interface class AttendanceRemoteDataSource {
-//   Future<String> checkWifiConnection();
-// }
-
-// class AttendanceRemoteDataSourceImpl implements AttendanceRemoteDataSource {
-//   AttendanceRemoteDataSourceImpl();
-
-//   @override
-//   Future<String> checkWifiConnection() async {
-// final info = NetworkInfo();
-// String? bssid;
-// try {
-//   bssid = await info.getWifiGatewayIP(); // الحصول على BSSID
-//   print(bssid);
-
-//   if (bssid == null) {
-//     throw "erorr in connection";
-//   } else {
-//     return bssid;
-//   }
-// } catch (e) {
-//   throw ServerException(e.toString());
-// }
-//   }
-
-//   // Future<UserModel> logInWithEmailAndPassword(
-//   //     {required String email, required String password}) async {
-//   // try {
-//   //   final response = await supabaseClient.auth
-//   //       .signInWithPassword(email: email, password: password);
-//   //   if (response.user == null) {
-//   //     throw ServerException("Email or Passowrd is wrong");
-//   //   } else {
-//   //     return UserModel.fromJson(response.user!.toJson())
-//   //         .copyWith(email: currentUserSession!.user.email);
-//   //   }
-//   // } catch (e) {
-//   //   throw ServerException(e.toString());
-//   // }
-//   // }
-// }
-
 import 'dart:io';
 
 import 'package:university_attendance/core/const/linksApi.dart';
@@ -58,6 +13,8 @@ abstract interface class AttendanceRemoteDataSource {
     required File imageFile,
     required String studId,
   });
+
+  Future<Map> getSessions({required int collageId, required String date});
 }
 
 class AttendanceRemoteDataSoureImpl implements AttendanceRemoteDataSource {
@@ -68,8 +25,11 @@ class AttendanceRemoteDataSoureImpl implements AttendanceRemoteDataSource {
       {required AttendanceModel attendanceModel}) async {
     //change Api links
     try {
-      final response = await crud.postData(Apilinks.baseUrl,
-          {"id": attendanceModel.id, "stdid": attendanceModel.studentId});
+      final response = await crud.postData(Apilinks.linkInsertUserAttendance, {
+        "attendance_session": attendanceModel.attendance_session,
+        "attendance_userid": attendanceModel.attendance_userid,
+        "attendance_date": attendanceModel.attendance_date
+      });
       return response;
     } catch (e) {
       throw ServerException(e.toString());
@@ -86,5 +46,17 @@ class AttendanceRemoteDataSoureImpl implements AttendanceRemoteDataSource {
       "name": studId,
     });
     return response;
+  }
+
+  @override
+  Future<Map> getSessions(
+      {required int collageId, required String date}) async {
+    try {
+      final response = await crud.postData(Apilinks.linkGetUserSessions,
+          {"date": date, "user_collage_id": collageId.toString()});
+      return response;
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
   }
 }

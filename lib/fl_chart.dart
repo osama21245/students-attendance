@@ -10,6 +10,7 @@ import 'package:university_attendance/features/attendance/data/model/attendance_
 import 'package:university_attendance/features/attendance/data/model/flplot_model.dart';
 import 'package:university_attendance/features/attendance/domin/entities/attendance.dart';
 import 'app_test_colors.dart';
+import 'features/attendance/data/model/attendance_model copy 2.dart';
 import 'features/attendance/data/model/attendance_model copy.dart';
 import 'features/attendance/presentation/pages/user_data/widgets/custom_dropdown_menu.dart';
 
@@ -28,7 +29,7 @@ class _LineChart extends StatefulWidget {
 
 class _LineChartState extends State<_LineChart> {
   List<LineChartBarData> chartsData = [];
-  List<TestAttendanceModel> attendanceModel = [];
+  List<TestAttendanceModel2> attendanceModel = [];
   List<Widget> indecator = [];
 
   static _indecator(
@@ -52,26 +53,28 @@ class _LineChartState extends State<_LineChart> {
   void generateLineChartBarData() {
     int counter = 2;
 
-    Map<String, List<TestAttendanceModel>> groupedData = {};
+    Map<String, List<TestAttendanceModel2>> groupedData = {};
     for (var attendance in attendanceModel) {
-      if (!groupedData.containsKey(attendance.material_name)) {
-        groupedData[attendance.material_name] = [];
+      if (attendance.attend != 0) {
+        if (!groupedData.containsKey(attendance.material_name)) {
+          groupedData[attendance.material_name] = [];
+        }
+        groupedData[attendance.material_name]!.add(attendance);
       }
-      groupedData[attendance.material_name]!.add(attendance);
     }
 
     for (var entry in groupedData.entries) {
-      List<TestAttendanceModel> data = entry.value;
+      List<TestAttendanceModel2> data = entry.value;
       List<FlSpot> spots = [];
 
       for (int i = 0; i < data.length; i++) {
-        DateTime currentDate = DateTime.parse(data[i].attendance_date);
+        DateTime currentDate = DateTime.parse(data[i].session_datetime);
         DateTime nextDate;
 
         if (i == data.length - 1) {
           nextDate = currentDate;
         } else {
-          nextDate = DateTime.parse(data[i + 1].attendance_date);
+          nextDate = DateTime.parse(data[i + 1].session_datetime);
         }
         if (spots.contains(FlSpot(currentDate.day.toDouble(), 1))) {
           spots.remove(FlSpot(currentDate.day.toDouble(), 1));
@@ -126,7 +129,7 @@ class _LineChartState extends State<_LineChart> {
           List attendanceData = res["data"];
           try {
             attendanceModel.addAll(
-                attendanceData.map((e) => TestAttendanceModel.fromMap(e)));
+                attendanceData.map((e) => TestAttendanceModel2.fromMap(e)));
 
             if (attendanceModel.isNotEmpty) {
               generateLineChartBarData();
@@ -412,7 +415,7 @@ class LineChartSample1 extends StatefulWidget {
 
 class LineChartSample1State extends State<LineChartSample1> {
   late bool isShowingMainData = true;
-  List<TestAttendanceModel> attendanceModel = [];
+  List<TestAttendanceModel2> attendanceModel = [];
   FlplotModel spotsModel = FlplotModel(flSpot: [], dateTime: []);
 
   List<String> duration = ["Last 7 days", "Last 30 days", "All"];
@@ -437,18 +440,18 @@ class LineChartSample1State extends State<LineChartSample1> {
           List attendanceData = res["data"];
           try {
             attendanceModel.addAll(
-                attendanceData.map((e) => TestAttendanceModel.fromMap(e)));
+                attendanceData.map((e) => TestAttendanceModel2.fromMap(e)));
 
             for (int i = 0; i <= attendanceModel.length; i++) {
               DateTime currentDate =
-                  DateTime.parse(attendanceModel[i].attendance_date);
+                  DateTime.parse(attendanceModel[i].session_datetime);
               DateTime nextDate =
-                  DateTime.parse(attendanceModel[i].attendance_date);
+                  DateTime.parse(attendanceModel[i].session_datetime);
               if (i == attendanceModel.length - 1) {
-                nextDate = DateTime.parse(attendanceModel[i].attendance_date);
+                nextDate = DateTime.parse(attendanceModel[i].session_datetime);
               } else {
                 nextDate =
-                    DateTime.parse(attendanceModel[i + 1].attendance_date);
+                    DateTime.parse(attendanceModel[i + 1].session_datetime);
               }
 
               spotsModel.flSpot.add(FlSpot(currentDate.day.toDouble(), 1));
@@ -549,7 +552,7 @@ class LineChartSample1State extends State<LineChartSample1> {
                             return ListTile(
                               title: Text(attendance.material_name),
                               subtitle: Text(attendance.user_name),
-                              trailing: Text(attendance.attendance_date),
+                              trailing: Text(attendance.session_datetime),
                             );
                           }),
                     )

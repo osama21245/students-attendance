@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:university_attendance/core/erorr/faliure.dart';
 import 'package:university_attendance/features/attendance/data/datasources/attendance_remote_data_source.dart';
 import 'package:fpdart/src/either.dart';
 import 'package:university_attendance/features/attendance/data/model/attendance_model.dart';
 import 'package:university_attendance/features/attendance/data/model/similarty_model.dart';
+import 'package:university_attendance/features/attendance/domin/entities/session.dart';
 import '../datasources/attendance_local_data_source.dart';
 import '../function/arabic_to_english_num.dart';
 import '../../domin/repository/attendance_repository.dart';
@@ -18,19 +20,16 @@ class AttendanceRRepositoryImpl implements AttendanceRepository {
   AttendanceRRepositoryImpl(
       this.attendanceRemoteDataSource, this.attendacneLocalDataSource);
   @override
-  Future<Either<Faliure, Map>> confirmAttendance(
-      {required String bssid,
-      required String id,
-      required String stdId}) async {
+  Future<Either<Faliure, Map>> confirmAttendance({
+    required String session_id,
+    required String userId,
+  }) async {
     try {
       AttendanceModel attendanceModel = AttendanceModel(
-          bssid: bssid,
-          id: id,
-          status: '',
-          lecturerId: '',
-          studentId: stdId,
-          date: '',
-          time: '');
+          attendance_id: "will_be_generated_in_DB",
+          attendance_session: session_id,
+          attendance_userid: userId,
+          attendance_date: DateTime.now().toString());
       final res = await attendanceRemoteDataSource.confirmAttendance(
           attendanceModel: attendanceModel);
       return right(res);
@@ -115,6 +114,34 @@ class AttendanceRRepositoryImpl implements AttendanceRepository {
     }
   }
 
+//sessions
+
+  @override
+  Future<Either<Faliure, List<Sessions>>> getSessions(
+      {required int collageId}) async {
+    try {
+      List<Sessions> sessions = [];
+      final date = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      print(date);
+
+      final res = await attendanceRemoteDataSource.getSessions(
+          date: date, collageId: collageId);
+      if (res["status"] == "success") {
+        print(res);
+        List sessionsData = res["data"];
+        sessions.addAll(sessionsData.map((e) => Sessions.fromMap(e)));
+        print(sessions);
+
+        return right(sessions);
+      } else {
+        return left(Faliure("there is no sessions"));
+      }
+    } catch (e) {
+      print(e);
+      return left(Faliure(e.toString()));
+    }
+  }
+
 //local database
 
   @override
@@ -129,22 +156,16 @@ class AttendanceRRepositoryImpl implements AttendanceRepository {
   }
 
   @override
-  Future<Either<Faliure, bool>> setLocalAttendance(
-      {required String lectureId,
-      required String studentId,
-      required String date,
-      required String time,
-      required String status,
-      required String bssid}) async {
+  Future<Either<Faliure, bool>> setLocalAttendance({
+    required String session_id,
+    required String userId,
+  }) async {
     try {
       AttendanceModel attendanceModel = AttendanceModel(
-          id: "id",
-          lecturerId: "lecturerId",
-          studentId: "studentId",
-          date: date,
-          time: time,
-          status: status,
-          bssid: bssid);
+          attendance_id: "will_be_generated_in_DB",
+          attendance_session: session_id,
+          attendance_userid: userId,
+          attendance_date: DateTime.now().toString());
       final res =
           await attendacneLocalDataSource.setLocalAttendance(attendanceModel);
 
