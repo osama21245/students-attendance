@@ -13,6 +13,7 @@ import 'package:university_attendance/features/attendance/domin/usecases/confirm
 import 'package:university_attendance/features/attendance/domin/usecases/confirm_qualifications.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/get_local_attendance.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/get_local_photos.dart';
+import 'package:university_attendance/features/attendance/domin/usecases/sessions/get_sessions.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/set_local_attendance.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/set_local_photos.dart';
 import 'package:university_attendance/features/auth/data/datasources/auth_remote_data_source.dart';
@@ -129,6 +130,7 @@ void _initAttendance() {
   serviceLocator.registerFactory(() => ConfirmAttendance(serviceLocator()));
   serviceLocator.registerFactory(() => ConfirmQualifications(serviceLocator()));
   serviceLocator.registerFactory(() => CheckStudFace(serviceLocator()));
+  serviceLocator.registerFactory(() => GetSessions(serviceLocator()));
   serviceLocator.registerFactory(() => GetLocalPhotos(serviceLocator()));
   serviceLocator.registerFactory(() => SetLocalPhotos(serviceLocator()));
   serviceLocator.registerFactory(() => GetLocalAttendance(serviceLocator()));
@@ -141,5 +143,6 @@ void _initAttendance() {
       getLocalPhotos: serviceLocator(),
       setLocalPhotos: serviceLocator(),
       setLocalAttendance: serviceLocator(),
-      getLocalAttendance: serviceLocator()));
+      getLocalAttendance: serviceLocator(),
+      getSessions: serviceLocator()));
 }

@@ -27,7 +27,8 @@ import '../widgets/check_attendance/circle_count_down.dart';
 import '../widgets/check_attendance/custom_show_photos.dart';
 
 class CheckAttendanceScreen extends StatefulWidget {
-  const CheckAttendanceScreen({super.key});
+  final String sessionId;
+  const CheckAttendanceScreen({super.key, required this.sessionId});
 
   @override
   State<CheckAttendanceScreen> createState() => _CheckAttendanceScreenState();
@@ -67,13 +68,11 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
     switch (state) {
       case AppLifecycleState.resumed:
         _banUser(withNav: false, removeBan: true);
-        _changeStatusBarColor(isReset: true);
         print("resume");
         break;
 
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
-        _changeStatusBarColor(isReset: false);
         _banUser(withNav: false, removeBan: false);
         print("pause");
       case AppLifecycleState.detached:
@@ -111,6 +110,7 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
     //     LocalNotification.streamController.stream.listen((val) {
     //   print(val.id);
     // });
+    _changeStatusBarColor(isReset: false);
     _startCheckingConnection();
     checkPermissions();
     _startAttendTimer();
@@ -124,6 +124,7 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
     _badStateTimer.dispose(); // Need to call dispose function
     FlutterBackground.disableBackgroundExecution();
     WidgetsBinding.instance.removeObserver(this);
+    _changeStatusBarColor(isReset: true);
     // _notificationSubscription!.cancel();
     super.dispose();
   }
@@ -237,9 +238,9 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
     });
   }
 
-  void _saveAttendance() {
-    context.read<AttendanceBloc>().add(AttendanceSetLocalAttendance(
-        bssid: '', id: '', time: '', stdId: '', date: '', status: ''));
+  void _saveAttendance(String userId) {
+    context.read<AttendanceBloc>().add(
+        AttendanceSetLocalAttendance(sessionId: widget.sessionId, userId: ""));
   }
 
   void _savePhotos() {
@@ -363,7 +364,7 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
                     AttendanceButton(
                         color: AppPallete.primaryColor,
                         buttonText: "Save Attendance",
-                        onPressed: () => _saveAttendance()),
+                        onPressed: () => _saveAttendance("")),
                   CustomShowPhotos(size: size, images: _images),
 
                   Text(user!.banDate),

@@ -122,8 +122,8 @@ class _OnlineSessionScreenState extends State<OnlineSessionScreen> {
 
     await _engine.joinChannel(
       token:
-          "007eJxTYJjxcL18cdGCu6dF9S5tur54jffnNpvZX/cu//m8deaW4ONTFBhSLBMTU5KSTUzMgdggKTExzdw8xcgiycTAwjjFJNmS5cjctIZARgbG94UMjFAI4rMw5BcbGjEwAACqkCNg",
-      channelId: "os12",
+          "007eJxTYLh1q/rR7L2+S3+tu6Lkq3VdYk2TWcO2uPN220s1gjeIrbRSYEixTExMSUo2MTEHYoOkxMQ0c/MUI4skEwML4xSTZEvOmUvSGgIZGU62TGdlZIBAEJ+FITUnv5iBAQDnvSE2",
+      channelId: "elos",
       uid: 0,
       options: const ChannelMediaOptions(),
     );
@@ -256,7 +256,7 @@ class _OnlineSessionScreenState extends State<OnlineSessionScreen> {
           controller: VideoViewController.remote(
             rtcEngine: _engine,
             canvas: VideoCanvas(uid: _remoteUid),
-            connection: const RtcConnection(channelId: "os12"),
+            connection: const RtcConnection(channelId: "elos"),
           ),
         ),
       );
