@@ -286,6 +286,8 @@ class _LineChart extends StatelessWidget {
           FlSpot(13, 4.5),
         ],
       );
+
+  //
 }
 
 class LineChartSample1 extends StatefulWidget {
