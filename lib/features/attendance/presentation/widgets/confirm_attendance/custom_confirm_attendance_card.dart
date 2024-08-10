@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:university_attendance/core/theme/app_pallete.dart';
 import 'package:university_attendance/core/utils/navigation.dart';
+import 'package:university_attendance/features/attendance/domin/entities/session.dart';
 import 'package:university_attendance/features/attendance/presentation/pages/confirm_attendance_details_screen.dart';
 
 import '../../pages/confirm_attendance_screen.dart';
@@ -9,11 +10,14 @@ class CustomConfirmAttendanceCard extends StatefulWidget {
   final Color color;
   final Size size;
   final String bandDate;
-  const CustomConfirmAttendanceCard(
-      {super.key,
-      required this.size,
-      required this.color,
-      required this.bandDate});
+  final String sessionId;
+  const CustomConfirmAttendanceCard({
+    super.key,
+    required this.size,
+    required this.color,
+    required this.bandDate,
+    required this.sessionId,
+  });
 
   @override
   State<CustomConfirmAttendanceCard> createState() =>
@@ -27,7 +31,11 @@ class _CustomConfirmAttendanceCardState
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        navigationTo(context, ConfirmAttendanceDetailsScreen());
+        navigationTo(
+            context,
+            ConfirmAttendanceDetailsScreen(
+              sessionId: widget.sessionId,
+            ));
       },
       child: Padding(
         padding: EdgeInsets.only(
@@ -70,7 +78,7 @@ class _CustomConfirmAttendanceCardState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Lecture",
+                        "Data Science",
                         style: TextStyle(
                           fontSize: widget.size.width * 0.05,
                           shadows: [
@@ -92,20 +100,6 @@ class _CustomConfirmAttendanceCardState
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Doctor: Hafez Abd El waheed",
-                        style: TextStyle(
-                            fontSize: widget.size.width * 0.032,
-                            fontWeight: FontWeight.w600,
-                            color: const Color.fromARGB(154, 181, 180, 180)),
-                      ),
-                      Text(
-                        "Course: Computer network and securty",
-                        style: TextStyle(
-                            fontSize: widget.size.width * 0.032,
-                            fontWeight: FontWeight.w600,
-                            color: const Color.fromARGB(154, 181, 180, 180)),
-                      ),
                       Text(
                         "Time: 11:00 - 12:00",
                         style: TextStyle(
@@ -138,22 +132,6 @@ class _CustomConfirmAttendanceCardState
                 ],
               ),
             ),
-            // Center(
-            //   child:
-            // Text(
-            //     "Test",
-            //     style: TextStyle(
-            //       fontSize: 30,
-            //       shadows: [
-            //         for (int i = 0; i < (isPressed ? 8 : 4); i++)
-            //           Shadow(
-            //             blurRadius: 3.0 * i,
-            //             color: AppPallete.gradient2,
-            //           )
-            //       ],
-            //     ),
-            //   ),
-            // )
           ),
         ),
       ),

@@ -12,17 +12,15 @@ class ConfirmAttendance implements UseCase<Map, ConfirmAttendanceParams> {
   Future<Either<Faliure, Map>> call(
       ConfirmAttendanceParams confirmAttendanceParams) async {
     return await attendanceRepository.confirmAttendance(
-        bssid: confirmAttendanceParams.bssid,
-        id: confirmAttendanceParams.id,
-        stdId: confirmAttendanceParams.stdId);
+      session_id: confirmAttendanceParams.sessionId,
+      userId: confirmAttendanceParams.userId,
+    );
   }
 }
 
 class ConfirmAttendanceParams {
-  final String bssid;
-  final String id;
-  final String stdId;
+  final String sessionId;
+  final String userId;
 
-  ConfirmAttendanceParams(
-      {required this.bssid, required this.id, required this.stdId});
+  ConfirmAttendanceParams({required this.sessionId, required this.userId});
 }

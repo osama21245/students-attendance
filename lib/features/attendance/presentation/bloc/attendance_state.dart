@@ -27,6 +27,14 @@ final class AttendanceCheckFaceSuccess extends AttendanceState {
   AttendanceCheckFaceSuccess({required this.similarty});
 }
 
+//sessions
+
+final class AttendanceGetSessionsSuccess extends AttendanceState {
+  final List<Sessions> sessions;
+
+  AttendanceGetSessionsSuccess({required this.sessions});
+}
+
 //local database
 
 final class AttendanceGetLocalAttendanceSuccess extends AttendanceState {
