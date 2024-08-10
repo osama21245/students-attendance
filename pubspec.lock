@@ -25,14 +25,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.11"
-  ansicolor:
-    dependency: transitive
-    description:
-      name: ansicolor
-      sha256: "8bf17a8ff6ea17499e40a2d2542c2f481cd7615760c6d34065cb22bfd22e6880"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.2"
   archive:
     dependency: transitive
     description:
@@ -458,10 +450,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_native_splash
-      sha256: aa06fec78de2190f3db4319dd60fdc8d12b2626e93ef9828633928c2dcaea840
+      sha256: "6777a3abb974021a39b5fdd2d46a03ca390e03903b6351f21d10e7ecc969f12d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.1"
+    version: "2.2.16"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1008,14 +1000,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
-  screen_recorder:
-    dependency: "direct main"
-    description:
-      name: screen_recorder
-      sha256: "9c0ec2ae245ec3f7b7abc59fb9105391af0b8ac144a9871a89038241cf8a78c2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1149,22 +1133,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
-  timeago:
-    dependency: "direct main"
-    description:
-      name: timeago
-      sha256: "054cedf68706bb142839ba0ae6b135f6b68039f0b8301cbe8784ae653d5ff8de"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.7.0"
-  timeline_tile:
-    dependency: "direct main"
-    description:
-      name: timeline_tile
-      sha256: "85ec2023c67137397c2812e3e848b2fb20b410b67cd9aff304bb5480c376fc0c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
   timezone:
     dependency: "direct main"
     description:
