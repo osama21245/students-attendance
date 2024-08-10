@@ -72,7 +72,10 @@ dependencies:
   crypto: ^3.0.1
   fastboard_flutter: ^0.0.2
   flutter_screenutil: ^5.9.3
-  flutter_native_splash: ^2.4.1
+  screen_recorder: ^0.2.0
+  timeline_tile: ^2.0.0
+  flutter_native_splash: ^2.2.16
+  timeago: ^3.7.0
 
 
 dev_dependencies:
