@@ -6,6 +6,7 @@ import 'package:university_attendance/features/attendance/presentation/pages/con
 import 'package:university_attendance/features/attendance/presentation/pages/home_screen.dart';
 import 'package:university_attendance/features/attendance/presentation/widgets/home/btm_nav_item.dart';
 import 'package:university_attendance/features/online_attendance/presentation/screens/test.dart';
+import 'package:university_attendance/fl_chart.dart';
 import 'core/common/entities/menu.dart';
 import 'core/common/entities/user.dart';
 import 'features/online_attendance/presentation/screens/feed_screen.dart';
@@ -24,6 +25,7 @@ class _HomeMainState extends State<HomeMain> {
     const HomeScreen(),
     const FeedScreen(),
     const ConfirmAttendanceScreen(),
+    const LineChartSample1()
   ];
   Menu selectedBottomNav = bottomNavItems.first;
 

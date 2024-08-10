@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
       //save in sharedPref
       SharedPreferences prefs = await SharedPreferences.getInstance();
       UserModel userModel = UserModel(
-          banDate: "0",
+          banDate: DateTime.now().toString(),
           id: "id",
           name: password,
           email: email,

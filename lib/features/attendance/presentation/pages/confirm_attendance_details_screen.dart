@@ -13,7 +13,8 @@ import '../bloc/attendance_bloc.dart';
 import '../widgets/confirm_attendance_details/custom_secound_check_photos.dart';
 
 class ConfirmAttendanceDetailsScreen extends StatefulWidget {
-  const ConfirmAttendanceDetailsScreen({super.key});
+  final String sessionId;
+  const ConfirmAttendanceDetailsScreen({super.key, required this.sessionId});
 
   @override
   State<ConfirmAttendanceDetailsScreen> createState() =>
@@ -52,6 +53,15 @@ class _ConfirmAttendanceDetailsScreenState
     //  }
   }
 
+  void _confirmAttendance() {
+    // for (File image in images) {
+    context.read<AttendanceBloc>().add(AttendanceConfirmAttendance(
+          sessionId: widget.sessionId,
+          userId: "",
+        ));
+    //  }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -64,7 +74,12 @@ class _ConfirmAttendanceDetailsScreenState
     return Scaffold(
       bottomNavigationBar: AttendanceButton(
           buttonText: "Submit",
-          onPressed: () {},
+          onPressed: () {
+            if (!firstCheck || !secoundCheck || counter == 0) {
+            } else {
+              _confirmAttendance();
+            }
+          },
           color: !firstCheck || !secoundCheck || counter == 0
               ? AppPallete.greyColor
               : AppPallete.primaryColor),
@@ -129,8 +144,16 @@ class _ConfirmAttendanceDetailsScreenState
                         itemBuilder: (context, index) =>
                             Text("${_failImagesIndexs[index]}")),
                   ),
-                  Text(firstCheck.toString()),
-                  Text(secoundCheck.toString())
+                  ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<AttendanceBloc>()
+                            .add(AttendanceConfirmAttendance(
+                              sessionId: widget.sessionId,
+                              userId: "",
+                            ));
+                      },
+                      child: const Text("Confirm Attendance")),
                 ],
               ),
             ),
