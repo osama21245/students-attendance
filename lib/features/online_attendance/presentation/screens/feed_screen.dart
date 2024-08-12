@@ -17,12 +17,12 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    String userId = Uuid().v1();
+    String userId = const Uuid().v1();
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Live Users',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -39,13 +39,13 @@ class _FeedScreenState extends State<FeedScreen> {
             children: [
               SizedBox(height: size.height * 0.03),
               InkWell(
-                onTap: () async => navigationTo(
-                    context,
-                    OnlineSessionScreen(
-                      channelId: "os12",
-                      userId: "o123",
-                      isBoadCaster: true,
-                    )),
+                // onTap: () async => navigationTo(
+                //     context,
+                //     const OnlineSessionScreen(
+                //       channelId: "os12",
+                //       userId: "o123",
+                //       isBoadCaster: true,
+                //     )),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Container(
@@ -59,20 +59,20 @@ class _FeedScreenState extends State<FeedScreen> {
                           child: Image.asset(ImageLinks.appLogo),
                         ),
                         const SizedBox(width: 10),
-                        Column(
+                        const Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "Dr : Hafez and el wahab",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
                             ),
                             Text(
                               "Network and computer science",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
