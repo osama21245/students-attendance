@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:university_attendance/core/const/linksApi.dart';
 
+import '../const/linksApi.dart';
 import 'api_erorr_model.dart';
 
 // TODO: wallahy I will refactor this .. Omar Ahmed
