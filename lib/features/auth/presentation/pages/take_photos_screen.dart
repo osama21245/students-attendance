@@ -16,6 +16,8 @@ import '../../../../core/utils/check_face_in_photo.dart';
 import '../bloc/auth_bloc.dart';
 
 class FaceCaptureScreen extends StatefulWidget {
+  const FaceCaptureScreen({super.key});
+
   @override
   _FaceCaptureScreenState createState() => _FaceCaptureScreenState();
 }
