@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/helpers/app_regex.dart';
+
 class AuthField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
   final bool isObscureText;
+  final Function(String?) validator;
   const AuthField({
     super.key,
     required this.hintText,
     required this.controller,
     this.isObscureText = false,
+    required this.validator,
   });
 
   @override
@@ -19,10 +23,7 @@ class AuthField extends StatelessWidget {
         hintText: hintText,
       ),
       validator: (value) {
-        if (value!.isEmpty) {
-          return "$hintText is missing!";
-        }
-        return null;
+        return validator(value);
       },
       obscureText: isObscureText,
     );
