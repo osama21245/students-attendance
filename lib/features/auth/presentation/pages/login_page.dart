@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            navigationTo(context, HomeMain());
+            navigationTo(context, const HomeMain());
           } else if (state is AuthFail) {
             showSnackBar(context, state.message);
           }
@@ -64,16 +64,16 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    AuthField(
-                      hintText: 'Email',
-                      controller: emailController,
-                    ),
-                    const SizedBox(height: 15),
-                    AuthField(
-                      hintText: 'Password',
-                      controller: passwordController,
-                      isObscureText: true,
-                    ),
+                    // AuthField(
+                    //   hintText: 'Email',
+                    //   controller: emailController,
+                    // ),
+                    // const SizedBox(height: 15),
+                    // AuthField(
+                    //   hintText: 'Password',
+                    //   controller: passwordController,
+                    //   isObscureText: true,
+                    // ),
                     const SizedBox(height: 20),
                     AuthGradientButton(
                       buttonText: 'Sign in',
