@@ -12,7 +12,6 @@ import 'core/common/entities/user.dart';
 import 'core/utils/get_user_data.dart';
 import 'features/attendance/presentation/bloc/attendance_bloc.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initDependencies();
@@ -64,9 +63,9 @@ class _MyAppState extends State<MyApp> {
         home: BlocBuilder<AppUserCubit, AppUserState>(
           builder: (context, state) {
             if (state is AppUserIsLogIn) {
-              return HomeMain();
+              return const HomeMain();
             } else {
-              return LoginPage();
+              return const LoginPage();
             }
           },
         ),

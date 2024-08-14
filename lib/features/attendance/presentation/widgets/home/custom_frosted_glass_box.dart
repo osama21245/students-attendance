@@ -45,7 +45,7 @@ class CustomForstedGlassBox extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             backgroundImage: AssetImage(
                                 "assets/avatars/large-group-people-sitting-auditorium-watching-presentation-generated-by-ai.jpg"),
                           ),
@@ -57,7 +57,8 @@ class CustomForstedGlassBox extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: size.width * 0.04,
                                 fontWeight: FontWeight.w800,
-                                color: Color.fromARGB(154, 181, 180, 180)),
+                                color:
+                                    const Color.fromARGB(154, 181, 180, 180)),
                           )
                         ],
                       ),
@@ -69,23 +70,23 @@ class CustomForstedGlassBox extends StatelessWidget {
                         style: TextStyle(
                             fontSize: size.width * 0.032,
                             fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(154, 181, 180, 180)),
+                            color: const Color.fromARGB(154, 181, 180, 180)),
                       ),
                       Text(
                         "Faculty: Computer science",
                         style: TextStyle(
                             fontSize: size.width * 0.032,
                             fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(154, 181, 180, 180)),
+                            color: const Color.fromARGB(154, 181, 180, 180)),
                       ),
                       Text(
                         "Semester: Fall 2024",
                         style: TextStyle(
                             fontSize: size.width * 0.032,
                             fontWeight: FontWeight.w600,
-                            color: Color.fromARGB(154, 181, 180, 180)),
+                            color: const Color.fromARGB(154, 181, 180, 180)),
                       ),
-                      Divider(),
+                      const Divider(),
                       Text(
                         "Level: 3",
                         style: TextStyle(

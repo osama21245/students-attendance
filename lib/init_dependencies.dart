@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
@@ -48,12 +47,12 @@ Future<void> initDependencies() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  if (kIsWeb) {
-  } else {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  }
+  // if (kIsWeb) {
+  // } else {
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
+  // }
 
   serviceLocator.registerLazySingleton(() => AppUserCubit());
 }
@@ -83,7 +82,7 @@ Future<void> _checkGeolocatorPermissions() async {
 }
 
 void checkBackGroundDependences() async {
-  final androidConfig = FlutterBackgroundAndroidConfig(
+  const androidConfig = FlutterBackgroundAndroidConfig(
     notificationTitle: "Background Service",
     notificationText: "Background service is running",
     notificationImportance: AndroidNotificationImportance.Default,
