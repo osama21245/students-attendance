@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -37,7 +36,7 @@ class _LineChartState extends State<_LineChart> {
       Row(
         children: [
           Container(width: 10, height: 10, color: color),
-          SizedBox(
+          const SizedBox(
             width: 7,
           ),
           Text(text)
@@ -156,7 +155,7 @@ class _LineChartState extends State<_LineChart> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(
+            SizedBox(
               height: 50,
               width: 150,
               child: ListView.builder(
@@ -558,7 +557,7 @@ class LineChartSample1State extends State<LineChartSample1> {
                             );
                           }),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
               CustomDropDown(
                 items: duration,
                 onChanged: (val) {
