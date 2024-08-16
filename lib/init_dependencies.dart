@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
@@ -13,6 +12,7 @@ import 'package:university_attendance/features/attendance/domin/usecases/confirm
 import 'package:university_attendance/features/attendance/domin/usecases/confirm_qualifications.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/get_local_attendance.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/get_local_photos.dart';
+import 'package:university_attendance/features/attendance/domin/usecases/sessions/get_sessions.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/set_local_attendance.dart';
 import 'package:university_attendance/features/attendance/domin/usecases/set_local_photos.dart';
 import 'package:university_attendance/features/auth/data/datasources/auth_remote_data_source.dart';
@@ -47,12 +47,12 @@ Future<void> initDependencies() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  if (kIsWeb) {
-  } else {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  }
+  // if (kIsWeb) {
+  // } else {
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
+  // }
 
   serviceLocator.registerLazySingleton(() => AppUserCubit());
 }
@@ -82,7 +82,7 @@ Future<void> _checkGeolocatorPermissions() async {
 }
 
 void checkBackGroundDependences() async {
-  final androidConfig = FlutterBackgroundAndroidConfig(
+  const androidConfig = FlutterBackgroundAndroidConfig(
     notificationTitle: "Background Service",
     notificationText: "Background service is running",
     notificationImportance: AndroidNotificationImportance.Default,
@@ -129,6 +129,7 @@ void _initAttendance() {
   serviceLocator.registerFactory(() => ConfirmAttendance(serviceLocator()));
   serviceLocator.registerFactory(() => ConfirmQualifications(serviceLocator()));
   serviceLocator.registerFactory(() => CheckStudFace(serviceLocator()));
+  serviceLocator.registerFactory(() => GetSessions(serviceLocator()));
   serviceLocator.registerFactory(() => GetLocalPhotos(serviceLocator()));
   serviceLocator.registerFactory(() => SetLocalPhotos(serviceLocator()));
   serviceLocator.registerFactory(() => GetLocalAttendance(serviceLocator()));
@@ -141,5 +142,6 @@ void _initAttendance() {
       getLocalPhotos: serviceLocator(),
       setLocalPhotos: serviceLocator(),
       setLocalAttendance: serviceLocator(),
-      getLocalAttendance: serviceLocator()));
+      getLocalAttendance: serviceLocator(),
+      getSessions: serviceLocator()));
 }

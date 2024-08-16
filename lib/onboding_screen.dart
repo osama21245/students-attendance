@@ -2,8 +2,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:university_attendance/core/const/image_links.dart';
+import 'package:university_attendance/core/helpers/extension.dart';
 import 'package:university_attendance/core/theme/app_pallete.dart';
 import 'package:university_attendance/features/auth/presentation/widgets/auth_gradient_button.dart';
+
+import 'core/routing/routes.dart';
 
 class OnbodingScreen extends StatefulWidget {
   const OnbodingScreen({super.key});
@@ -59,7 +62,7 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Image.asset(
@@ -90,7 +93,9 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
                     const Spacer(flex: 2),
                     AuthGradientButton(
                       buttonText: 'Start',
-                      onPressed: () {},
+                      onPressed: () {
+                        context.pushNamed(Routes.loginScreen);
+                      },
                     ),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 24),

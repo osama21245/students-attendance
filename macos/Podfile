@@ -38,6 +38,12 @@ end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
+    # Set the macOS deployment target to 10.13 for all pods
+    target.build_configurations.each do |config|
+      config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '10.13'
+    end
+
+    # Special case for the 'Realm' target
     if target.name == 'Realm'
       create_symlink_phase = target.shell_script_build_phases.find { |x| x.name == 'Create Symlinks to Header Folders' }
       create_symlink_phase.always_out_of_date = "1"

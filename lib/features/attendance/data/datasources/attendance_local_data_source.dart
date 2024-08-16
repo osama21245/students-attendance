@@ -24,7 +24,7 @@ class AttendanceLocalDataSourceImpl implements AttendanceLocalDataSource {
       if (attendanceJson != null) {
         List<AttendanceModel> attendanceDecodedList;
 
-        // attendanceJson.map((e) => attendanceDecodedList.add(AttendanceModel.fromJson(jsonDecode(e)))).toList();
+        //attendanceJson.map((e) => attendanceDecodedList.add(AttendanceModel.fromJson(jsonDecode(e)))).toList();
         attendanceDecodedList = attendanceJson
             .map((e) => AttendanceModel.fromJson(jsonDecode(e)))
             .toList();
@@ -33,6 +33,7 @@ class AttendanceLocalDataSourceImpl implements AttendanceLocalDataSource {
 
       throw "Erorr in get your data";
     } catch (e) {
+      print(e);
       throw ServerException(e.toString());
     }
   }

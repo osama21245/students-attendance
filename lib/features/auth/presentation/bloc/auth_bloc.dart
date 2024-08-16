@@ -36,11 +36,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthSignIn>(_authSignIn);
     on<AuthSetStudFaceModel>(_setStudFaceModelFun);
   }
+  //=======================text controllers ==================================
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+//=======================functions ========================================
 
   void _authSignUp(AuthSignUp event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
-    final res = await _userSignUp(
-        UserSignUpParams(event.email, event.password, event.name));
+    final res = await _userSignUp(UserSignUpParams(
+        emailController.text, emailController.text, event.name));
 
     res.fold((l) {
       emit(AuthFail(l.erorr));

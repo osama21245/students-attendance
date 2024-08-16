@@ -12,29 +12,14 @@ class SetLocalAttendance implements UseCase<bool, SetLocalAttendanceParams> {
   Future<Either<Faliure, bool>> call(
       SetLocalAttendanceParams setLocalAttendanceParams) async {
     return await attendanceRepository.setLocalAttendance(
-      lectureId: '',
-      studentId: '',
-      time: '',
-      date: '',
-      status: '',
-      bssid: '',
-    );
+        session_id: setLocalAttendanceParams.sessionId,
+        userId: setLocalAttendanceParams.userId);
   }
 }
 
 class SetLocalAttendanceParams {
-  final String bssid;
-  final String id;
-  final String stdId;
-  final String time;
-  final String date;
-  final String status;
+  final String sessionId;
+  final String userId;
 
-  SetLocalAttendanceParams(
-      {required this.bssid,
-      required this.id,
-      required this.stdId,
-      required this.date,
-      required this.status,
-      required this.time});
+  SetLocalAttendanceParams({required this.sessionId, required this.userId});
 }
