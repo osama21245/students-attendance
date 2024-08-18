@@ -64,16 +64,18 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    // AuthField(
-                    //   hintText: 'Email',
-                    //   controller: emailController,
-                    // ),
-                    // const SizedBox(height: 15),
-                    // AuthField(
-                    //   hintText: 'Password',
-                    //   controller: passwordController,
-                    //   isObscureText: true,
-                    // ),
+                    AuthField(
+                      hintText: 'Email',
+                      controller: emailController,
+                      validator: (String) {},
+                    ),
+                    const SizedBox(height: 15),
+                    AuthField(
+                      hintText: 'Password',
+                      controller: passwordController,
+                      isObscureText: true,
+                      validator: (String) {},
+                    ),
                     const SizedBox(height: 20),
                     AuthGradientButton(
                       buttonText: 'Sign in',

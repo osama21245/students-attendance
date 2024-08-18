@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:jailbreak_root_detection/jailbreak_root_detection.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:university_attendance/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:university_attendance/core/erorr/custom_error_screen.dart';
@@ -23,7 +22,6 @@ import 'package:university_attendance/features/auth/domain/usecases/user_sign_in
 import 'package:university_attendance/features/auth/domain/usecases/user_sign_up.dart';
 import 'package:university_attendance/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:university_attendance/firebase_options.dart';
 import 'features/attendance/data/datasources/attendance_local_data_source.dart';
 import 'features/attendance/data/datasources/attendance_remote_data_source.dart';
 import 'features/attendance/data/repositories/attendance_repository_ipl.dart';
@@ -39,6 +37,7 @@ Future<void> initDependencies() async {
   _initAttendance();
   _checkGeolocatorPermissions();
   customErorrScreen();
+  checkRootAndJeliBreak();
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
@@ -55,6 +54,23 @@ Future<void> initDependencies() async {
   // }
 
   serviceLocator.registerLazySingleton(() => AppUserCubit());
+}
+
+void checkRootAndJeliBreak() async {
+  final isNotTrust = await JailbreakRootDetection.instance.isNotTrust;
+  final isJailBroken = await JailbreakRootDetection.instance.isJailBroken;
+  final isRealDevice = await JailbreakRootDetection.instance.isRealDevice;
+  final isOnExternalStorage =
+      await JailbreakRootDetection.instance.isOnExternalStorage;
+  final checkForIssues = await JailbreakRootDetection.instance.checkForIssues;
+  final isDevMode = await JailbreakRootDetection.instance.isDevMode;
+//print previous commands
+  print("isNotTrust: $isNotTrust");
+  print("isJailBroken: $isJailBroken");
+  print("isRealDevice: $isRealDevice");
+  print("isOnExternalStorage: $isOnExternalStorage");
+  print("checkForIssues: $checkForIssues");
+  print("isDevMode: $isDevMode");
 }
 
 Future<void> _checkGeolocatorPermissions() async {
