@@ -36,8 +36,8 @@ class CheckAttendanceScreen extends StatefulWidget {
 
 class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
     with WidgetsBindingObserver {
-  String _bssid = '';
-  String _targetBssid = '192.168.1.1'; // عنوان BSSID المحدد
+  final String _bssid = '';
+  final String _targetBssid = '192.168.1.1'; // عنوان BSSID المحدد
   Timer? _timer;
   DateTime startDate = DateTime.utc(2024, 7, 28, 14, 0, 0);
   DateTime endDate = DateTime.utc(2024, 7, 28, 14, 2, 0);
@@ -49,12 +49,12 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
   CountDownController? _countDownTimerController;
   bool canAttend = false;
   bool offlineCheck = true;
-  List<File> _images = [];
+  final List<File> _images = [];
   bool checkPhotos = true;
   File? _image;
   bool showWaitingTime = false;
   User? user;
-  LocalNotification _localNotification = LocalNotification();
+  final LocalNotification _localNotification = LocalNotification();
   //StreamSubscription? _notificationSubscription;
 
   Timer? _timer2;
@@ -62,6 +62,7 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
     mode: StopWatchMode.countUp,
   );
 
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
@@ -165,7 +166,7 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
       if (!withOnlineCheck) {
         _image = File(pickedFile.path);
 
-        if (await checkFaceInPhoto(_image!, context)) {
+        if (!await checkFaceInPhoto(_image!, context)) {
           //Backup image
           if (_images.length == 1 || _images.length == 3) {
             attendTimes++;
@@ -216,7 +217,7 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
             : DateTime.now().add(Duration(seconds: remainingTime)).toString());
     context.read<AppUserCubit>().updateUser(user);
     if (withNav) {
-      navigationOf(context, HomeMain());
+      navigationOf(context, const HomeMain());
     }
     setUserData(user!);
     print(user!.banDate);
@@ -224,8 +225,8 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
   }
 
   void _startAttendTimer() {
-    _timer2 = Timer.periodic(Duration(seconds: (diff!.inSeconds / 20).toInt()),
-        (timer) async {
+    _timer2 =
+        Timer.periodic(Duration(seconds: diff!.inSeconds ~/ 20), (timer) async {
       if (goodTimesAttended > diff!.inSeconds / 10 && attendTimes == 0) {
         checkPhotos = false;
         canAttend = true;
@@ -264,7 +265,7 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
           if (state is AttendanceSetLocalAttendanceSuccess) {
             _savePhotos();
           } else if (state is AttendanceSetLocalPhotosSuccess) {
-            navigationOf(context, HomeMain());
+            navigationOf(context, const HomeMain());
             showSnackBar(context, "Your attendance added successfully");
           } else if (state is AttendanceCheckFaceSuccess) {
           } else if (state is AttendanceSetLocalPhotosSuccess) {
@@ -325,7 +326,7 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
                             Padding(
                               padding: const EdgeInsets.all(8),
                               child: Text(
-                                "Waiting time: ${displayTime}",
+                                "Waiting time: $displayTime",
                                 style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.red,
@@ -339,8 +340,11 @@ class _CheckAttendanceScreenState extends State<CheckAttendanceScreen>
                   ),
                   if (canAttend && offlineCheck)
                     AuthGradientButton(
-                        buttonText:
-                            "${attendTimes == 0 && _images.length == 0 ? "First Attendance : offline" : _images.length == 1 || _images.length == 3 ? "Backup image" : "Second Attendance"}",
+                        buttonText: attendTimes == 0 && _images.isEmpty
+                            ? "First Attendance : offline"
+                            : _images.length == 1 || _images.length == 3
+                                ? "Backup image"
+                                : "Second Attendance",
                         onPressed: () {
                           if (canAttend && attendTimes == 0) {
                             _getImage(false);
