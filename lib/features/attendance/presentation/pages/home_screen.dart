@@ -1,11 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:university_attendance/core/common/widget/loader.dart';
 import 'package:university_attendance/core/const/image_links.dart';
 import 'package:university_attendance/core/theme/app_pallete.dart';
 import 'package:university_attendance/features/attendance/presentation/pages/check_attendance_screen.dart';
-import 'package:university_attendance/features/attendance/presentation/widgets/home/custom_attendance_card.dart';
 import 'package:university_attendance/features/attendance/presentation/widgets/home/custom_home_upper_widget.dart';
 import '../../../../core/utils/navigation.dart';
 import '../bloc/attendance_bloc.dart';
