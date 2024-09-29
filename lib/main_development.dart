@@ -4,10 +4,12 @@ import 'package:university_attendance/core/routing/app_router.dart';
 import 'package:university_attendance/core/theme/theme_data.dart';
 import 'package:university_attendance/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:university_attendance/features/auth/presentation/pages/login_page.dart';
+import 'package:university_attendance/features/auth/presentation/pages/on_boarding_screen.dart';
 import 'package:university_attendance/homemain.dart';
 import 'package:university_attendance/init_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:university_attendance/onboding_screen.dart';
 import 'core/common/entities/user.dart';
 import 'core/utils/get_user_data.dart';
 import 'features/attendance/presentation/bloc/attendance_bloc.dart';
@@ -63,9 +65,9 @@ class _MyAppState extends State<MyApp> {
         home: BlocBuilder<AppUserCubit, AppUserState>(
           builder: (context, state) {
             if (state is AppUserIsLogIn) {
-              return const HomeMain();
+              return const OnbodingScreen();
             } else {
-              return const LoginPage();
+              return const OnbodingScreen();
             }
           },
         ),
