@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 import 'package:university_attendance/core/const/image_links.dart';
 import 'package:university_attendance/core/helpers/extension.dart';
+import 'package:university_attendance/core/helpers/spacer.dart';
 import 'package:university_attendance/core/theme/app_pallete.dart';
 import 'package:university_attendance/features/auth/presentation/widgets/auth_gradient_button.dart';
 
 import 'core/routing/routes.dart';
+import 'features/auth/presentation/widgets/custom_text_field.dart';
 
 class OnbodingScreen extends StatefulWidget {
   const OnbodingScreen({super.key});
@@ -89,6 +91,14 @@ class _OnbodingScreenState extends State<OnbodingScreen> {
                           ),
                         ],
                       ),
+                    ),
+                    verticalSpace(30),
+                    const CustomTextField(
+                      title: "email",
+                    ),
+                    verticalSpace(17),
+                    const CustomTextField(
+                      title: "password",
                     ),
                     const Spacer(flex: 2),
                     AuthGradientButton(
